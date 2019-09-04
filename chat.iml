@@ -31,7 +31,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.12.v20180830" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.6" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.6" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.6" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.27" level="project" />
     <orderEntry type="library" name="Maven: com.sparkjava:spark-template-handlebars:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.jknack:handlebars:4.0.6" level="project" />
