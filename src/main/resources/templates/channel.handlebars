@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Awesome Chat Server</title>
+  <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+</head>
+<body>
+<script src="/jquery.min.js"></script>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col col-12">
+      <div class="card bg-light">
+        <h5 class="card-header">{{channelName}}
+          <small class="text-muted">{{userName}}</small>
+        </h5>
+        <div class="card-body">
+            {{#each channel.messages}}
+                <div class="card col-8 px-0">
+                  <h6 class="card-header">{{userName}}
+                    <small class="text-muted">{{time}}</small>
+                  </h6>
+                  <div class="card-body">
+                    <p class="card-text">{{text}}</p>
+                  </div>
+                </div>
+            {{/each}}
+          <form method="post">
+            <div class="form-group">
+              <div class="input-group">
+                <label class="sr-only" for="message">Say something!</label>
+                <input type="input" class="form-control" id="message" name="text"
+                       placeholder="Send a message ...">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/bootstrap.bundle.min.js"></script>
+</body>
+</html>
