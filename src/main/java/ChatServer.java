@@ -48,6 +48,10 @@ public class ChatServer {
 
   private static void submitNewMessage(String channelName, String userName, String text) {
     ChatChannel channel = getOrCreateChannel(channelName);
+    createMessage(channel, userName, text);
+  }
+
+  private static void createMessage(ChatChannel channel, String userName, String text) {
     channel.getMessages()
         .add(new ChatMessage(channel, userName, text, LocalDateTime.now()));
   }
