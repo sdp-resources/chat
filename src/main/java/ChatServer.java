@@ -44,9 +44,7 @@ public class ChatServer {
     String channelName = req.params("channelName");
     model.put("channelName", channelName);
     model.put("userName", req.params("userName"));
-    if (!channels.containsKey(channelName)) {
-      channels.put(channelName, new ChatChannel(channelName));
-    }
+    createChannelIfNotExists(channelName);
     model.put("channel", channels.get(channelName));
     return model;
   }
@@ -57,12 +55,16 @@ public class ChatServer {
     ChatChannel channel = channels.get(channelName);
     String text = req.queryParams("text");
     LocalDateTime timestamp = LocalDateTime.now();
-    if (!channels.containsKey(channelName)) {
-      channels.put(channelName, new ChatChannel(channelName));
-    }
+    createChannelIfNotExists(channelName);
     channels.get(channelName)
         .getMessages()
         .add(new ChatMessage(channel, userName, text, timestamp));
+  }
+
+  private static void createChannelIfNotExists(String channelName) {
+    if (!channels.containsKey(channelName)) {
+      channels.put(channelName, new ChatChannel(channelName));
+    }
   }
 
   private static String render(Map<String, Object> model, String templateName) {
