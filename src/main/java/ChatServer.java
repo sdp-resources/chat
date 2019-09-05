@@ -56,15 +56,18 @@ public class ChatServer {
   }
 
   private static String render(Map<String, Object> model, String templateName) {
-    Context context = Context
-        .newBuilder(model)
+    Context context = prepareContext(model);
+    return templateEngine.render(new ModelAndView(context, templateName));
+  }
+
+  private static Context prepareContext(Map<String, Object> model) {
+    return Context.newBuilder(model)
         .resolver(
             MapValueResolver.INSTANCE,
             JavaBeanValueResolver.INSTANCE,
             FieldValueResolver.INSTANCE,
             MethodValueResolver.INSTANCE)
         .build();
-    return templateEngine.render(new ModelAndView(context, templateName));
   }
 }
 
