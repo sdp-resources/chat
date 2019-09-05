@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,5 +17,10 @@ public class ChatChannel {
 
   String getChannelName() {
     return channelName;
+  }
+
+  void createMessage(String userName, String text) {
+    getMessages()
+        .add(new ChatMessage(this, userName, text, LocalDateTime.now()));
   }
 }
