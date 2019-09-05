@@ -13,7 +13,7 @@ import static spark.Spark.*;
 
 public class ChatServer {
   private static HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine();
-  private static Map<String, ChatChannel> channels = new HashMap<>();
+  private static ChannelStorage channelStorage = new ChannelStorage();
 
   public static void main(String[] args) {
     port(4590);
@@ -52,12 +52,12 @@ public class ChatServer {
 
   private static ChatChannel getOrCreateChannel(String channelName) {
     createChannelIfNotExists(channelName);
-    return getChannels().get(channelName);
+    return getChannels().getChannels().get(channelName);
   }
 
   private static void createChannelIfNotExists(String channelName) {
-    if (!getChannels().containsKey(channelName)) {
-      getChannels().put(channelName, new ChatChannel(channelName));
+    if (!getChannels().getChannels().containsKey(channelName)) {
+      getChannels().getChannels().put(channelName, new ChatChannel(channelName));
     }
   }
 
@@ -76,8 +76,8 @@ public class ChatServer {
         .build();
   }
 
-  private static Map<String, ChatChannel> getChannels() {
-    return channels;
+  private static ChannelStorage getChannels() {
+    return channelStorage;
   }
 
 }
