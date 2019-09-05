@@ -41,24 +41,13 @@ public class ChatServer {
     Map<String, Object> model = new HashMap<>();
     model.put("channelName", channelName);
     model.put("userName", userName);
-    model.put("channel", getOrCreateChannel(channelName));
+    model.put("channel", channelStorage.getOrCreateChannel(channelName));
     return model;
   }
 
   private static void submitNewMessage(String channelName, String userName, String text) {
-    ChatChannel channel = getOrCreateChannel(channelName);
+    ChatChannel channel = channelStorage.getOrCreateChannel(channelName);
     channel.createMessage(userName, text);
-  }
-
-  private static ChatChannel getOrCreateChannel(String channelName) {
-    createChannelIfNotExists(channelName);
-    return channelStorage.getChannels().get(channelName);
-  }
-
-  private static void createChannelIfNotExists(String channelName) {
-    if (!channelStorage.getChannels().containsKey(channelName)) {
-      channelStorage.getChannels().put(channelName, new ChatChannel(channelName));
-    }
   }
 
   private static String render(Map<String, Object> model, String templateName) {
