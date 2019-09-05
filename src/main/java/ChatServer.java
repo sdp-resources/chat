@@ -42,17 +42,19 @@ public class ChatServer {
     Map<String, Object> model = new HashMap<>();
     model.put("channelName", channelName);
     model.put("userName", userName);
-    createChannelIfNotExists(channelName);
-    model.put("channel", channels.get(channelName));
+    model.put("channel", getOrCreateChannel(channelName));
     return model;
   }
 
   private static void submitNewMessage(String channelName, String userName, String text) {
-    createChannelIfNotExists(channelName);
-    ChatChannel channel = channels.get(channelName);
-    channels.get(channelName)
-        .getMessages()
+    ChatChannel channel = getOrCreateChannel(channelName);
+    channel.getMessages()
         .add(new ChatMessage(channel, userName, text, LocalDateTime.now()));
+  }
+
+  private static ChatChannel getOrCreateChannel(String channelName) {
+    createChannelIfNotExists(channelName);
+    return channels.get(channelName);
   }
 
   private static void createChannelIfNotExists(String channelName) {
