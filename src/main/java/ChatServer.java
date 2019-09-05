@@ -46,8 +46,8 @@ public class ChatServer {
   }
 
   private static void submitNewMessage(String channelName, String userName, String text) {
-    ChatChannel channel = channelStorage.getChannel(channelName);
-    channel.createMessage(userName, text);
+    channelStorage.getChannel(channelName)
+        .createMessage(userName, text);
   }
 
   private static String render(Map<String, Object> model, String templateName) {
