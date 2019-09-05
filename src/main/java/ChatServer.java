@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.time.LocalDateTime;
@@ -28,31 +29,40 @@ public class ChatServer {
       return res;
     });
     get("/:channelName/:userName", (req, res) -> {
-      Map<String, Object> model = new HashMap<>();
-      String channelName = req.params("channelName");
-      model.put("channelName", channelName);
-      model.put("userName", req.params("userName"));
-      if (!channels.containsKey(channelName)) {
-        channels.put(channelName, new ChatChannel(channelName));
-      }
-      model.put("channel", channels.get(channelName));
+      Map<String, Object> model = prepareChannelModel(req);
       return render(model, "channel.handlebars");
     });
     post("/:channelName/:userName", (req, res) -> {
-      String channelName = req.params("channelName");
-      String userName = req.params("userName");
-      ChatChannel channel = channels.get(channelName);
-      String text = req.queryParams("text");
-      LocalDateTime timestamp = LocalDateTime.now();
-      if (!channels.containsKey(channelName)) {
-        channels.put(channelName, new ChatChannel(channelName));
-      }
-      channels.get(channelName)
-          .getMessages()
-          .add(new ChatMessage(channel, userName, text, timestamp));
+      submitNewMessage(req);
       res.redirect(req.pathInfo());
       return res;
     });
+  }
+
+  private static Map<String, Object> prepareChannelModel(Request req) {
+    Map<String, Object> model = new HashMap<>();
+    String channelName = req.params("channelName");
+    model.put("channelName", channelName);
+    model.put("userName", req.params("userName"));
+    if (!channels.containsKey(channelName)) {
+      channels.put(channelName, new ChatChannel(channelName));
+    }
+    model.put("channel", channels.get(channelName));
+    return model;
+  }
+
+  private static void submitNewMessage(Request req) {
+    String channelName = req.params("channelName");
+    String userName = req.params("userName");
+    ChatChannel channel = channels.get(channelName);
+    String text = req.queryParams("text");
+    LocalDateTime timestamp = LocalDateTime.now();
+    if (!channels.containsKey(channelName)) {
+      channels.put(channelName, new ChatChannel(channelName));
+    }
+    channels.get(channelName)
+        .getMessages()
+        .add(new ChatMessage(channel, userName, text, timestamp));
   }
 
   private static String render(Map<String, Object> model, String templateName) {
