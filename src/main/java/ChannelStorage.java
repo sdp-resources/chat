@@ -4,7 +4,7 @@ import java.util.Map;
 public class ChannelStorage {
   private final Map<String, ChatChannel> channels = new HashMap<>();
 
-  public ChatChannel getOrCreateChannel(String channelName) {
+  public ChatChannel getChannel(String channelName) {
     createChannelIfNotExists(channelName);
     return channels.get(channelName);
   }

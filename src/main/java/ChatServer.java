@@ -41,12 +41,12 @@ public class ChatServer {
     Map<String, Object> model = new HashMap<>();
     model.put("channelName", channelName);
     model.put("userName", userName);
-    model.put("channel", channelStorage.getOrCreateChannel(channelName));
+    model.put("channel", channelStorage.getChannel(channelName));
     return model;
   }
 
   private static void submitNewMessage(String channelName, String userName, String text) {
-    ChatChannel channel = channelStorage.getOrCreateChannel(channelName);
+    ChatChannel channel = channelStorage.getChannel(channelName);
     channel.createMessage(userName, text);
   }
 
