@@ -39,7 +39,6 @@ public class ChatServer {
 
   private static Map<String, Object> prepareChannelModel(String channelName, String userName) {
     Map<String, Object> model = new HashMap<>();
-    model.put("channelName", channelName);
     model.put("userName", userName);
     model.put("channel", channelStorage.getChannel(channelName));
     return model;
