@@ -4,7 +4,6 @@ import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
 import spark.ModelAndView;
-import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.time.LocalDateTime;
@@ -29,30 +28,26 @@ public class ChatServer {
       return res;
     });
     get("/:channelName/:userName", (req, res) -> {
-      Map<String, Object> model = prepareChannelModel(req);
+      Map<String, Object> model = prepareChannelModel(req.params("channelName"), req.params("userName"));
       return render(model, "channel.handlebars");
     });
     post("/:channelName/:userName", (req, res) -> {
-      submitNewMessage(req);
+      submitNewMessage(req.params("channelName"), req.params("userName"), req.queryParams("text"));
       res.redirect(req.pathInfo());
       return res;
     });
   }
 
-  private static Map<String, Object> prepareChannelModel(Request req) {
+  private static Map<String, Object> prepareChannelModel(String channelName, String userName) {
     Map<String, Object> model = new HashMap<>();
-    String channelName = req.params("channelName");
     model.put("channelName", channelName);
-    model.put("userName", req.params("userName"));
+    model.put("userName", userName);
     createChannelIfNotExists(channelName);
     model.put("channel", channels.get(channelName));
     return model;
   }
 
-  private static void submitNewMessage(Request req) {
-    String channelName = req.params("channelName");
-    String userName = req.params("userName");
-    String text = req.queryParams("text");
+  private static void submitNewMessage(String channelName, String userName, String text) {
     createChannelIfNotExists(channelName);
     ChatChannel channel = channels.get(channelName);
     channels.get(channelName)
