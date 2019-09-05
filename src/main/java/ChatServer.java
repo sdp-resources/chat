@@ -52,10 +52,10 @@ public class ChatServer {
   private static void submitNewMessage(Request req) {
     String channelName = req.params("channelName");
     String userName = req.params("userName");
-    ChatChannel channel = channels.get(channelName);
     String text = req.queryParams("text");
     LocalDateTime timestamp = LocalDateTime.now();
     createChannelIfNotExists(channelName);
+    ChatChannel channel = channels.get(channelName);
     channels.get(channelName)
         .getMessages()
         .add(new ChatMessage(channel, userName, text, timestamp));
