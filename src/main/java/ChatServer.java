@@ -52,12 +52,12 @@ public class ChatServer {
 
   private static ChatChannel getOrCreateChannel(String channelName) {
     createChannelIfNotExists(channelName);
-    return getChannels().getChannels().get(channelName);
+    return channelStorage.getChannels().get(channelName);
   }
 
   private static void createChannelIfNotExists(String channelName) {
-    if (!getChannels().getChannels().containsKey(channelName)) {
-      getChannels().getChannels().put(channelName, new ChatChannel(channelName));
+    if (!channelStorage.getChannels().containsKey(channelName)) {
+      channelStorage.getChannels().put(channelName, new ChatChannel(channelName));
     }
   }
 
@@ -74,10 +74,6 @@ public class ChatServer {
             FieldValueResolver.INSTANCE,
             MethodValueResolver.INSTANCE)
         .build();
-  }
-
-  private static ChannelStorage getChannels() {
-    return channelStorage;
   }
 
 }
