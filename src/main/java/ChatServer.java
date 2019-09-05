@@ -53,12 +53,11 @@ public class ChatServer {
     String channelName = req.params("channelName");
     String userName = req.params("userName");
     String text = req.queryParams("text");
-    LocalDateTime timestamp = LocalDateTime.now();
     createChannelIfNotExists(channelName);
     ChatChannel channel = channels.get(channelName);
     channels.get(channelName)
         .getMessages()
-        .add(new ChatMessage(channel, userName, text, timestamp));
+        .add(new ChatMessage(channel, userName, text, LocalDateTime.now()));
   }
 
   private static void createChannelIfNotExists(String channelName) {
