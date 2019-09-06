@@ -20,7 +20,10 @@ public class ChatChannel {
   }
 
   void createMessage(String userName, String text) {
-    getMessages()
-        .add(new ChatMessage(this, userName, text, LocalDateTime.now()));
+    getMessages().add(createChatMessage(userName, text));
+  }
+
+  private ChatMessage createChatMessage(String userName, String text) {
+    return new ChatMessage(this, userName, text, LocalDateTime.now());
   }
 }
