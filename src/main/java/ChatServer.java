@@ -6,6 +6,7 @@ import com.github.jknack.handlebars.context.MethodValueResolver;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +46,9 @@ public class ChatServer {
   }
 
   private static void submitNewMessage(String channelName, String userName, String text) {
-    channelStorage.getChannel(channelName)
-        .createMessage(userName, text);
+    ChatChannel channel = channelStorage.getChannel(channelName);
+    ChatMessage message = createChatMessage(channel, userName, text);
+    channel.addMessage(message);
   }
 
   private static String render(Map<String, Object> model, String templateName) {
@@ -64,5 +66,8 @@ public class ChatServer {
         .build();
   }
 
+  public static ChatMessage createChatMessage(ChatChannel channel, String userName, String text) {
+    return new ChatMessage(channel, userName, text, LocalDateTime.now());
+  }
 }
 
